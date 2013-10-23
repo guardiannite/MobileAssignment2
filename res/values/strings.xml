@@ -4,5 +4,6 @@
     <string name="app_name">AddressBook</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="action_menu_add_contact">Add New Contact</string>
 
 </resources>
