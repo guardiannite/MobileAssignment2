@@ -29,7 +29,7 @@ public class Model extends SQLiteOpenHelper
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_MYCONTACTS = "Contacts";
 
-    private static final String TABLE_CREATE_MYCOURSES =
+    private static final String TABLE_CREATE_MYcontactS =
                             "CREATE TABLE " +
                             TABLE_MYCONTACTS +
                                     "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -64,7 +64,7 @@ public class Model extends SQLiteOpenHelper
     {
         // Execute the CREATE TABLE statement defined as a const.
     	//If the call is an invalid SQL statement, SQLException is thrown
-        db.execSQL(TABLE_CREATE_MYCOURSES);
+        db.execSQL(TABLE_CREATE_MYcontactS);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class Model extends SQLiteOpenHelper
         // Open the database connect, keep it close to the actual operation.
         openDBConnection();
 
-        // Execute query to update the specified course.
+        // Execute query to update the specified contact.
         long id = _db.insert(TABLE_MYCONTACTS, null, values);
 
         if(id != -1)
@@ -152,7 +152,7 @@ public class Model extends SQLiteOpenHelper
         // Open the database connect, keep it close to the actual operation.
         openDBConnection();
 
-        // Execute query to update the specified course.
+        // Execute query to update the specified contact.
         int rowsAffected = _db.update(TABLE_MYCONTACTS,
                                                                         values,
                                                                         KEY_ID + " = ?",
@@ -163,7 +163,7 @@ public class Model extends SQLiteOpenHelper
 
         if (rowsAffected == 0)
         {
-                // The course row was not updated, what should be done?
+                // The contact row was not updated, what should be done?
                 Log.d(TAG, "Contact not updated!");
                 return false;
         }
@@ -182,7 +182,7 @@ public class Model extends SQLiteOpenHelper
         // Open the database connect, keep it close to the actual operation.
         openDBConnection();
 
-        // Execute query to delete the specified course.
+        // Execute query to delete the specified contact.
         int rowsAffected = _db.delete(TABLE_MYCONTACTS,
                                                                         KEY_ID + " = ?",
                                                                         new String[] { String.valueOf(contact.getID()) });
@@ -192,7 +192,7 @@ public class Model extends SQLiteOpenHelper
 
         if (rowsAffected == 0)
         {
-                // The course row was not deleted, what should be done?
+                // The contact row was not deleted, what should be done?
                 Log.d(TAG, "Contact not deleted!");
                 return false;
         }
@@ -220,12 +220,12 @@ public class Model extends SQLiteOpenHelper
         
         openDBConnection();
         
-        // Return the specific course row based on ID passed.
+        // Return the specific contact row based on ID passed.
         // _id is required by SimpleCursorAdaptor.
         Cursor cursor = _db.query(TABLE_MYCONTACTS,
-                                          new String[] { KEY_ID, KEY_NAME},
-                                          null,
-                                          null,
+                                          new String[] { KEY_ID, KEY_NAME, KEY_PHONE, KEY_EMAIL, KEY_STREET, KEY_CITY},
+                                          KEY_ID + " = ?",
+                                          new String[] {String.valueOf(id)},
                                           null,
                                           null,
                                           KEY_NAME);
@@ -247,7 +247,7 @@ public class Model extends SQLiteOpenHelper
         
         openDBConnection();
         
-        // Query for a list of courses.
+        // Query for a list of contacts.
         Cursor cursor = _db.query(TABLE_MYCONTACTS,
                                   new String[] { KEY_ID, KEY_NAME, KEY_PHONE, KEY_EMAIL, KEY_STREET, KEY_CITY},
                                   null,
@@ -256,7 +256,7 @@ public class Model extends SQLiteOpenHelper
                                   null,
                                   KEY_NAME);
         
-        // Populate the course List by iterating through Cursor.
+        // Populate the contact List by iterating through Cursor.
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) 
         {

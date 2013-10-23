@@ -15,6 +15,7 @@ public class MainActivity extends Activity implements IContactControlListener
 	private FragmentManager _fragmentManager;
 	private ListFragmentView _listFragmentView;
 	private ArrayAdapter<Contact> _adapter;
+	private final String TAG = "MainActivity";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,12 +38,11 @@ public class MainActivity extends Activity implements IContactControlListener
 		//Contact contact = new Contact("Josh", "490-4124", "joshua.schultz@mines.sdsmt.edu", "805 Blaine Ave", "Rapid City");
 		//_model.insertContact(contact);
 		//_model.deleteContact(contact);
-		
-		Log.d("MainActivity", "Just starting onCreate()");
+		Log.d(TAG, "Just starting onCreate()");
 		List<Contact> contacts = _model.getContacts();
 		for(int i = 0; i < contacts.size(); i++)
 		{
-			Log.d("MainActivity", contacts.toArray()[i].toString());
+			Log.d(TAG, contacts.toArray()[i].toString());
 		}		
 	}
 
@@ -56,31 +56,31 @@ public class MainActivity extends Activity implements IContactControlListener
 	@Override
 	public void selectContact(Contact contact) {
 		// TODO Auto-generated method stub
-		
+		Log.d(TAG, contact.getName() + " selected");
 	}
 
 	@Override
 	public void insertContact() {
 		// TODO Auto-generated method stub
-		
+		Log.d(TAG, "insertContact()");
 	}
 
 	@Override
 	public void insertContact(Contact contact) {
 		// TODO Auto-generated method stub
-		
+		Log.d(TAG, contact.getName() + " inserted");
 	}
 
 	@Override
 	public void deleteContact(Contact contact) {
 		// TODO Auto-generated method stub
-		
+		Log.d(TAG, contact.getName() + " deleted");
 	}
 
 	@Override
 	public void updateContact(Contact contact) {
 		// TODO Auto-generated method stub
-		
+		Log.d(TAG, contact.getName() + " updated");
 	}
 
 	@Override
