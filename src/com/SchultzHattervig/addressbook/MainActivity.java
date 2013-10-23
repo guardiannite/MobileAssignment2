@@ -15,8 +15,8 @@ public class MainActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		_model = Model.getInstance(this);
-		Contact contact = new Contact("Josh", "490-4124", "joshua.schultz@mines.sdsmt.edu", "805 Blaine Ave", "Rapid City");
-		_model.insertContact(contact);
+		//Contact contact = new Contact("Josh", "490-4124", "joshua.schultz@mines.sdsmt.edu", "805 Blaine Ave", "Rapid City");
+		//_model.insertContact(contact);
 		//_model.deleteContact(contact);
 		
 		Log.d("MainActivity", "Just starting onCreate()");
@@ -25,6 +25,13 @@ public class MainActivity extends Activity
 		{
 			Log.d("MainActivity", contacts.toArray()[i].toString());
 		}
+		_model.clearAllContacts();
+		contacts = _model.getContacts();
+		for(int i = 0; i < contacts.size(); i++)
+		{
+			Log.d("MainActivity", contacts.toArray()[i].toString());
+		}
+		
 	}
 
 	@Override

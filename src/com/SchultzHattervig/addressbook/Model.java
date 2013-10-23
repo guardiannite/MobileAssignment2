@@ -199,6 +199,21 @@ public class Model extends SQLiteOpenHelper
         return true;
     }
 
+    public void clearAllContacts()
+    {
+    	List<Contact> contacts = getContacts();
+    	
+    	openDBConnection();
+    	
+    	for(int i = 0; i < contacts.size(); i++)
+    		if(!deleteContact((Contact)contacts.toArray()[i]))
+    		{
+    			Log.d(TAG, "Error in clearing all contacts");
+    		}
+    	
+    	closeDBConnection();
+    }
+    
     public Contact getContact(long id)
     {
         Contact contact = null;
@@ -211,9 +226,9 @@ public class Model extends SQLiteOpenHelper
                                           new String[] { KEY_ID, KEY_NAME},
                                           null,
                                           null,
-                                                          null,
-                                                          null,
-                                                          KEY_NAME);
+                                          null,
+                                          null,
+                                          KEY_NAME);
         
         if (cursor.moveToFirst())
         {
@@ -234,12 +249,12 @@ public class Model extends SQLiteOpenHelper
         
         // Query for a list of courses.
         Cursor cursor = _db.query(TABLE_MYCONTACTS,
-                                                          new String[] { KEY_ID, KEY_NAME, KEY_PHONE, KEY_EMAIL, KEY_STREET, KEY_CITY},
-                                                          null,
-                                                          null,
-                                                          null,
-                                                          null,
-                                                          KEY_NAME);
+                                  new String[] { KEY_ID, KEY_NAME, KEY_PHONE, KEY_EMAIL, KEY_STREET, KEY_CITY},
+                                  null,
+                                  null,
+                                  null,
+                                  null,
+                                  KEY_NAME);
         
         // Populate the course List by iterating through Cursor.
         cursor.moveToFirst();
