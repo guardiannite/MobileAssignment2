@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_add_contact"
+        android:showAsAction="always|withText"
+        android:title="@string/action_menu_add_contact" 
+        android:icon="@android:drawable/ic_menu_add" 
+        android:checked="true"/>
+    
+    <item
+        android:id="@+id/action_update_contact"
+        android:showAsAction="always|withText"
+        android:title="@string/action_menu_update_contact"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:checked="true"/>
+        
+    <item
+        android:id="@+id/action_delete_contact"
+        android:showAsAction="always|withText"
+        android:title="@string/action_menu_delete_contact"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:checked="true"/>
+
+</menu>

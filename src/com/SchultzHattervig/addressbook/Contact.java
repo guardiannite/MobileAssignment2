@@ -1,6 +1,8 @@
 package com.SchultzHattervig.addressbook;
 
-public class Contact 
+import java.util.Comparator;
+
+public class Contact implements Comparator<Contact>
 {
 	//Used for other classes to compare if the contact has a valid database lookup ID
 	public static final long INVALID_ID = -1;
@@ -86,4 +88,10 @@ public class Contact
     {
         return String.valueOf(_id) + ": " + _name + " from " + _street + " " + _city + " with email " + _email + " and phone number " + _phone;
     }
+
+	@Override
+	public int compare(Contact lhs, Contact rhs) 
+	{
+		return lhs.getName().compareTo(rhs.getName());
+	}
 }
