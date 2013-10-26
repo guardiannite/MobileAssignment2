@@ -7,5 +7,11 @@
     <string name="action_menu_add_contact">Add New Contact</string>
     <string name="action_menu_update_contact">Edit Contact</string>
     <string name="action_menu_delete_contact">Delete Contact</string>
+    <string name="default_name">Name</string>
+    <string name="default_phone">Phone</string>
+    <string name="default_email">Email</string>
+    <string name="default_street">Street Address</string>
+    <string name="default_city">City, State ZIP</string>
+    <string name="save_button_title">Save Contact</string>
 
 </resources>

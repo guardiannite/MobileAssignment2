@@ -8,10 +8,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
-public class DetailFragmentView extends Fragment 
+public class DetailFragmentView extends Fragment implements OnClickListener
 {
     //IMPORTANT NOTE: There are no public members.
     
@@ -19,7 +22,12 @@ public class DetailFragmentView extends Fragment
     private Contact _contact = null;
     private boolean _isOrientationChanging = false;
     
-    private TextView _textViewCourseNumber;
+    private EditText _editTextName;
+    private EditText _editTextPhone;
+    private EditText _editTextEmail;
+    private EditText _editTextAddress;
+    private EditText _editTextCity;
+    private Button _saveButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -44,8 +52,14 @@ public class DetailFragmentView extends Fragment
             View rootView = inflater.inflate(R.layout.detail_fragment, container, false);
 
             // Assign instances of Views from the Layout Resource.
-            _textViewCourseNumber = (TextView) rootView.findViewById(R.id.textViewCourseNumber);
+            _editTextName = (EditText) rootView.findViewById(R.id.editTextName);
+            _editTextPhone = (EditText) rootView.findViewById(R.id.editTextPhone);
+            _editTextEmail = (EditText) rootView.findViewById(R.id.editTextEmail);
+            _editTextAddress = (EditText) rootView.findViewById(R.id.editTextAddress);
+            _editTextCity = (EditText) rootView.findViewById(R.id.editTextCity);
 
+            _saveButton = (Button) rootView.findViewById(R.id.saveButton);
+            _saveButton.setOnClickListener(this);
             return rootView;
     }
 
@@ -78,6 +92,7 @@ public class DetailFragmentView extends Fragment
                     // Get a reference to the course that was selected from 
                     // the list through the listener interface.
                     _contact = _listener.getContact();
+                    
             }
             
             displayContact();
@@ -117,8 +132,8 @@ public class DetailFragmentView extends Fragment
             {
                     case R.id.action_update_contact:
                     {
-                            _contact.setName(_contact.getName() + " | UPDATED!");
-                            _listener.updateContact(_contact);
+                        enableEditing(true);
+                            //_listener.updateContact(_contact);
                             return true;
                     }
                     case R.id.action_delete_contact:
@@ -133,17 +148,78 @@ public class DetailFragmentView extends Fragment
             }
     }
 
+    
     private void displayContact()
     {
             if (_contact.getID() > 0)
             {
-                    // Use the member Course object to populate the view.
-                    _textViewCourseNumber.setText(_contact.getName());
+                    _editTextName.setText(_contact.getName());
+                    _editTextPhone.setText(_contact.getPhone());
+                    _editTextEmail.setText(_contact.getEmail());
+                    _editTextAddress.setText(_contact.getStreet());
+                    _editTextCity.setText(_contact.getCity());
+                    
+                    enableEditing(false);
             }
             else
             {
                     // Not fully implemented.
-                    _textViewCourseNumber.setText("NEW COURSE COMING SOON!");
+                _editTextName.setHint(_contact.getName());
+                _editTextPhone.setHint(_contact.getPhone());
+                _editTextEmail.setHint(_contact.getEmail());
+                _editTextAddress.setHint(_contact.getStreet());
+                _editTextCity.setHint(_contact.getCity());
+                
+                //If the text isn't cleared, the hints won't be displayed
+                _editTextName.setText("");
+                _editTextPhone.setText("");
+                _editTextEmail.setText("");
+                _editTextAddress.setText("");
+                _editTextCity.setText("");
+                
+                enableEditing(true);
             }
+            
     }
+
+    private void enableEditing(boolean value)
+    {
+        _editTextName.setEnabled(value);
+        _editTextPhone.setEnabled(value);
+        _editTextEmail.setEnabled(value);
+        _editTextAddress.setEnabled(value);
+        _editTextCity.setEnabled(value);
+        
+        if(value)
+        {
+        	_saveButton.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+        	_saveButton.setVisibility(View.INVISIBLE);
+        }
+    }
+    
+	@Override
+	public void onClick(View v) 
+	{	
+		String name = _editTextName.getText().toString();
+		String phone = _editTextPhone.getText().toString();
+		String email = _editTextEmail.getText().toString();
+		String street = _editTextAddress.getText().toString();
+		String city = _editTextCity.getText().toString();
+		_contact = new Contact(name, phone, email, street, city, _contact.getID());
+    	
+		if(_contact.getID() == Contact.INVALID_ID)
+		{
+			//New Entry
+			_listener.insertContact(_contact);
+		}
+		else
+		{
+			//Already exists in the database (since ID is valid)
+			_listener.updateContact(_contact);
+		}
+		
+	}
 }

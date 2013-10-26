@@ -288,13 +288,14 @@ public class Model extends SQLiteOpenHelper
 
     private Contact cursorToContact(Cursor cursor)
     {
-        Contact contact = new Contact(cursor.getLong(cursor.getColumnIndex(KEY_ID))); 
-        contact.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME))); 
-        contact.setPhone(cursor.getString(cursor.getColumnIndex(KEY_PHONE))); 
-        contact.setEmail(cursor.getString(cursor.getColumnIndex(KEY_EMAIL))); 
-        contact.setStreet(cursor.getString(cursor.getColumnIndex(KEY_STREET))); 
-        contact.setCity(cursor.getString(cursor.getColumnIndex(KEY_CITY))); 
+        long id = cursor.getLong(cursor.getColumnIndex(KEY_ID));
+        String name = cursor.getString(cursor.getColumnIndex(KEY_NAME)); 
+        String phone = cursor.getString(cursor.getColumnIndex(KEY_PHONE)); 
+        String email = cursor.getString(cursor.getColumnIndex(KEY_EMAIL)); 
+        String street = cursor.getString(cursor.getColumnIndex(KEY_STREET)); 
+        String city = cursor.getString(cursor.getColumnIndex(KEY_CITY)); 
         
+        Contact contact = new Contact(name, phone, email, street, city, id);
         return contact;
     }
 

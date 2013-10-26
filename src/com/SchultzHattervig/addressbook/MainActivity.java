@@ -57,10 +57,9 @@ public class MainActivity extends Activity implements IContactControlListener
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+	public boolean onCreateOptionsMenu(Menu menu) 
+	{
+		return false;
 	}
 
 	@Override
@@ -72,10 +71,22 @@ public class MainActivity extends Activity implements IContactControlListener
 	}
 
 	@Override
-	public void insertContact() {
+	public void insertContact() 
+	{
 		// TODO Auto-generated method stub
-		_contact = new Contact("", "", "", "", "");
-		showDetailFragment();
+		String name = getResources().getString(R.string.default_name);
+		String phone = getResources().getString(R.string.default_phone);
+		String email = getResources().getString(R.string.default_email);
+		String street = getResources().getString(R.string.default_street);
+		String city = getResources().getString(R.string.default_city);
+		
+		_contact = new Contact(name,
+							   phone,
+							   email,
+							   street,
+							   city);
+		//showDetailFragment();
+		selectContact(_contact);
 		Log.d(TAG, "insertContact()");
 	}
 
@@ -88,6 +99,7 @@ public class MainActivity extends Activity implements IContactControlListener
 		
 		_model.insertContact(contact);
 		_fragmentManager.popBackStackImmediate();
+		
 		Log.d(TAG, contact.getName() + " inserted");
 	}
 
@@ -124,6 +136,7 @@ public class MainActivity extends Activity implements IContactControlListener
 	@Override
 	public ArrayAdapter<Contact> getContactArrayAdapter() {
 		// TODO Auto-generated method stub
+		refreshArrayAdapter();
 		return _adapter;
 	}
 	

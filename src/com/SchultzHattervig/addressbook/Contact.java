@@ -23,8 +23,9 @@ public class Contact implements Comparator<Contact>
 		_city = city;
 	}
 	
-	public Contact(long id)
+	public Contact(String name, String phone, String email, String street, String city, long id)
 	{
+		this(name, phone, email, street, city);
 		_id = id;
 	}
 	
@@ -56,31 +57,6 @@ public class Contact implements Comparator<Contact>
 	public String getCity()
 	{
 		return _city;
-	}
-	
-	public void setName(String name)
-	{
-		_name = name;
-	}
-	
-	public void setPhone(String phone)
-	{
-		_phone = phone;
-	}
-	
-	public void setEmail(String email)
-	{
-		_email = email;
-	}
-	
-	public void setStreet(String street)
-	{
-		_street = street;
-	}
-	
-	public void setCity(String city)
-	{
-		_city = city;
 	}
 	
     @Override
