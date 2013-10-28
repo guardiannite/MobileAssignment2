@@ -3,8 +3,8 @@ package com.SchultzHattervig.addressbook;
 import android.widget.ArrayAdapter;
 /** 
  * 
- * @author Josh Schultz & Erik Hattervig
- *
+ * @author Josh Schultz
+ * @author Erik Hattervig
  */
 public interface IContactControlListener 
 {

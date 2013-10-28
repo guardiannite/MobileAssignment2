@@ -10,9 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 /**
+ * This fragment displays a list of the current contacts being
+ * stored in the database by name. The fragment brings up a detail
+ * fragment of a contact when the name is pressed.
  * 
- * @author Josh Schultz & Erik Hattervig
- *
+ * @author Josh Schultz
+ * @author Erik Hattervig
  */
 public class ListFragmentView extends ListFragment 
 {
@@ -21,7 +24,11 @@ public class ListFragmentView extends ListFragment
     private IContactControlListener _listener;
 
     /**
+     * onCreate override for this class. Makes a menu option
+     * on the screen.
      * 
+     * @author Josh Schultz
+     * @author Erik Hattervig
      */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -37,7 +44,10 @@ public class ListFragmentView extends ListFragment
     }
     
     /**
+     * Creates a menu on the screen with the option Create Contact
      * 
+     * @author Josh Schultz
+     * @author Erik Hattervig
      */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflator)
@@ -51,7 +61,11 @@ public class ListFragmentView extends ListFragment
     }
 
     /**
+     * Attaches this fragment to an activity. In the case of this app
+     * it is attached to the main activity.
      * 
+     * @author Josh Schultz
+     * @author Erik Hattervig
      */
     @Override
     public void onAttach(Activity activity)
@@ -72,7 +86,11 @@ public class ListFragmentView extends ListFragment
 
 
     /**
+     * The onResume override for this fragment. Refreshes the contact
+     * list so that it is up to date.
      * 
+     * @author Josh Schultz
+     * @author Erik Hattervig
      */
     @Override
     public void onResume()
@@ -84,7 +102,11 @@ public class ListFragmentView extends ListFragment
     }
 
     /**
+     * Handles the clicking of the menu button add contact. When clicked
+     * calls the insertContact method of our listener.
      * 
+     * @author Josh Schultz
+     * @author Erik Hattervig
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
@@ -103,7 +125,12 @@ public class ListFragmentView extends ListFragment
     }
 
     /**
+     * Handles the clicking of an item in the contacts list. When clicked
+     * calls the seletContact method of our listener with the position of
+     * the selected contact.
      * 
+     * @author Josh Schultz
+     * @author Erik Hattervig
      */
     @Override
     public void onListItemClick(ListView l, View v, int position, long id)
@@ -118,7 +145,10 @@ public class ListFragmentView extends ListFragment
     }
 
     /**
+     * Refreshes the contact list so that it is up date.
      * 
+     * @author Josh Schultz
+     * @author Erik Hattervig
      */
     private void refreshContactList()
     {

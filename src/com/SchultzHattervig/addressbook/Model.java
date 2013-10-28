@@ -10,9 +10,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 /**
+ * Handles insertion, deletion, and modifying of contacts in the
+ * database.
  * 
- * @author Josh Schultz & Erik Hattervig
- *
+ * @author Josh Schultz
+ * @author Erik Hattervig
  */
 public class Model extends SQLiteOpenHelper 
 {
@@ -52,11 +54,6 @@ public class Model extends SQLiteOpenHelper
      * @author brianb
      *
      */
-
-    /**
-     * 
-     * @param context
-     */
     public Model(Context context)
     {
         // Call the parent class and pass the actual name and version of the
@@ -67,6 +64,7 @@ public class Model extends SQLiteOpenHelper
     }
 
     /**
+     * The onCreate override. Opens up the SQLite database passed to it.
      * @param db
      */
     @Override
@@ -76,29 +74,9 @@ public class Model extends SQLiteOpenHelper
     	//If the call is an invalid SQL statement, SQLException is thrown
         db.execSQL(TABLE_CREATE_MYcontactS);
     }
-
-    /**
-     * @param db
-     * @param oldVersion
-     * @param newVersion
-     */
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
-    {
-        // If there is ever a need to upgrade the database and/or table.
-        // Compare old and new versions to determine if modifications
-        // to the database are necessary. Typically, this will be done with
-        // ALTER TABLE or CREATE TABLE SQL statements depending on the
-        // change required.
-
-        if (newVersion == 2)
-        {
-        	// No version 2 upgrade process yet.
-        }
-    }
     
     /**
-     * 
+     * Forces there to be only one database in existence for this app.
      * @param context
      * @return
      */
@@ -115,7 +93,10 @@ public class Model extends SQLiteOpenHelper
     }
 
     /**
+     * Inserts a contact into the database.
      * 
+     * @author Josh Schultz
+	 * @author Erik Hattervig
      * @param contact
      */
     public void insertContact(Contact contact)
@@ -143,29 +124,18 @@ public class Model extends SQLiteOpenHelper
         closeDBConnection();
 
     }
-
-    /**
-     * 
-     */
-    public void insertSampleContacts()
-    {
-        Contact contact;
-        
-        contact = new Contact("Josh", "460-4124", "josh.schultz@mines.sdsmt.edu", "923 Blaine Ave", "Rapid City");
-        insertContact(contact);
-        
-        contact = new Contact("Dave", "279-4129", "David.Jarsen@yahoo.com", "9011 Jackson Blvd", "Chicago");
-        insertContact(contact);
-        
-        contact = new Contact("George", "272-2482", "gman1955@yahoo.com", "8th SW Ave", "Denver");
-        insertContact(contact);
-        
-        contact = new Contact("Zehn", "994-2985", "zehn23456@gmail.com", "262 Park St", "Atlanta");
-        insertContact(contact);
+    
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    	// TODO Auto-generated method stub
+    	
     }
 
     /**
+     * Updates a contact in the database that is passed to it.
      * 
+     * @author Josh Schultz
+	 * @author Erik Hattervig
      * @param contact
      * @return
      */
@@ -203,7 +173,10 @@ public class Model extends SQLiteOpenHelper
     }
 
     /**
+     * Deletes the contact that is passed to it from the database.
      * 
+     * @author Josh Schultz
+	 * @author Erik Hattervig
      * @param contact
      * @return
      */
@@ -236,28 +209,13 @@ public class Model extends SQLiteOpenHelper
         return true;
     }
 
-    /**
-     * 
-     */
-    public void clearAllContacts()
-    {
-    	List<Contact> contacts = getContacts();
-    	
-    	openDBConnection();
-    	
-    	for(int i = 0; i < contacts.size(); i++)
-    		if(!deleteContact((Contact)contacts.toArray()[i]))
-    		{
-    			Log.d(TAG, "Error in clearing all contacts");
-    		}
-    	
-    	closeDBConnection();
-    }
     
     /**
+     * Gets the Contact's information based on the id that is passed in
      * 
+     * @author Josh Schultz
+	 * @author Erik Hattervig
      * @param id
-     * @return
      */
     public Contact getContact(long id)
     {
@@ -287,7 +245,11 @@ public class Model extends SQLiteOpenHelper
     }
     
     /**
+     * Gets and returns a list of all of the contacts that are currently
+     * in the database
      * 
+     * @author Josh Schultz
+	 * @author Erik Hattervig
      * @return
      */
     public List<Contact> getContacts()
@@ -321,7 +283,10 @@ public class Model extends SQLiteOpenHelper
     }
 
     /**
+     * Opens a connection to the database for reading and writing to it.
      * 
+     * @author Josh Schultz
+	 * @author Erik Hattervig
      */
     private void openDBConnection()
     {
@@ -330,7 +295,10 @@ public class Model extends SQLiteOpenHelper
     }
 
     /**
+     * Closes the database connection
      * 
+     * @author Josh Schultz
+	 * @author Erik Hattervig
      */
     private void closeDBConnection()
     {
@@ -342,6 +310,10 @@ public class Model extends SQLiteOpenHelper
     }
 
     /**
+     * Gets the information from the database from a cursor.
+     * 
+     * @author Josh Schultz
+	 * @author Erik Hattervig
      * 
      * @param cursor
      * @return 

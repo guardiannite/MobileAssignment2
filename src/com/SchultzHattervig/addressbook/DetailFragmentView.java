@@ -18,7 +18,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 /**
- * Another Description
+ * The DetailFragmentView fragment handles the input dialog from the 
+ * user when creating a new contact and editing a contact, as well as 
+ * displaying a detailed view of the contact's information.
  * @author Josh Schultz
  * @author Erik Hattervig
  */
@@ -28,6 +30,7 @@ public class DetailFragmentView extends Fragment implements OnClickListener
     
     private IContactControlListener _listener;
     private Contact _contact = null;
+    private boolean _isEditing;
     private boolean _isOrientationChanging = false;
     
     private EditText _editTextName;
@@ -37,6 +40,11 @@ public class DetailFragmentView extends Fragment implements OnClickListener
     private EditText _editTextCity;
     private Button _saveButton;
 
+    /**
+     * The onCreate for this fragment. Handles which option menu to
+     * create when the fragment is created
+     * 
+     */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -51,9 +59,13 @@ public class DetailFragmentView extends Fragment implements OnClickListener
             // Tells the host Activity to display the appropriate
             // option menu.
             setHasOptionsMenu(true);
+            
+            //State the view isn't being edited
+            _isEditing = false;
     }
 
     /**
+     * 
      * @param inflater
      * @param container
      * @param saveInstanceState
@@ -76,6 +88,12 @@ public class DetailFragmentView extends Fragment implements OnClickListener
 
             _saveButton = (Button) rootView.findViewById(R.id.saveButton);
             _saveButton.setOnClickListener(this);
+            
+            _editTextName.setHint(R.string.default_name);
+            _editTextPhone.setHint(R.string.default_phone);
+            _editTextEmail.setHint(R.string.default_email);
+            _editTextAddress.setHint(R.string.default_street);
+            _editTextCity.setHint(R.string.default_city);
             
             _editTextName.addTextChangedListener(new TwitterEditTextHandler());
             return rootView;
@@ -140,6 +158,7 @@ public class DetailFragmentView extends Fragment implements OnClickListener
     }
 
     /**
+     * Creates the menu for editing view if editing view is present.
      * @param menu
      * @param menuInflator
      */
@@ -158,6 +177,8 @@ public class DetailFragmentView extends Fragment implements OnClickListener
     }
 
     /**
+     * Handles the clicking of the menu. The menu has two options, Update Contact
+     * and Delete Contact.
      * @param item
      * 
      * @return
@@ -187,7 +208,12 @@ public class DetailFragmentView extends Fragment implements OnClickListener
     }
 
     /**
+     * Enters the contact information into the text fields when a
+     * contact is selected. If creating a new contact, sets fields
+     * to text's appropriate hint.
      * 
+     * @author Josh Schultz
+     * @author Erik Hattervig
      */
     private void displayContact()
     {
@@ -203,19 +229,16 @@ public class DetailFragmentView extends Fragment implements OnClickListener
             }
             else
             {
-                    // Not fully implemented.
-                _editTextName.setHint(_contact.getName());
-                _editTextPhone.setHint(_contact.getPhone());
-                _editTextEmail.setHint(_contact.getEmail());
-                _editTextAddress.setHint(_contact.getStreet());
-                _editTextCity.setHint(_contact.getCity());
                 
                 //If the text isn't cleared, the hints won't be displayed
-                _editTextName.setText("");
-                _editTextPhone.setText("");
-                _editTextEmail.setText("");
-                _editTextAddress.setText("");
-                _editTextCity.setText("");
+            	if(!_isEditing)
+            	{
+	                _editTextName.setText("");
+	                _editTextPhone.setText("");
+	                _editTextEmail.setText("");
+	                _editTextAddress.setText("");
+	                _editTextCity.setText("");
+            	}
                 
                 enableEditing(true);
             }
@@ -223,6 +246,11 @@ public class DetailFragmentView extends Fragment implements OnClickListener
     }
 
     /**
+     * Enables or disables the editing view by setting the fragments
+     * text boxes to enabled or disabled and shows or hides the save button.
+     * 
+     * @author Josh Schultz
+     * @author Erik Hattervig
      * 
      * @param value
      */
@@ -242,10 +270,18 @@ public class DetailFragmentView extends Fragment implements OnClickListener
         {
         	_saveButton.setVisibility(View.INVISIBLE);
         }
+        _isEditing = value;
     }
     
     
     /**
+     * Handles the clicking of the save button. This function converts
+     * the contents of the text fields into strings and then turns them
+     * into a contact object and then stores the contact into the database.
+     * 
+     * @author Josh Schultz
+     * @author Erik Hattervig
+     * 
      * @param v
      */
 	@Override
@@ -272,7 +308,14 @@ public class DetailFragmentView extends Fragment implements OnClickListener
 	}
 	
     /**
+     * Handles the clicking of the delete contact button in the menu.
+     * This function calls a alert message prompt for the user asking
+     * them to confirm the deletion. If the user presses yes then the
+     * function deletes the current contact from the database and pops
+     * this fragment of of the back stack.
      * 
+     * @author Josh Schultz
+     * @author Erik Hattervig
      */
     public void onDeleteClicked ()
     {
@@ -308,43 +351,28 @@ public class DetailFragmentView extends Fragment implements OnClickListener
 		}
 	};
 	
-	/**************************************************************************
-	 * Author:  Josh Schultz & Erik Hattervig
-	 * Date: October 4, 2012
-	 * Extends: (none)
-	 * Implements: TextWatcher
-	 * Methods:  public void afterTextChanged(Editable s) 
-	 *           public void beforeTextChanged(CharSequence s, int start, int count,
-					int after)
-	 *           public void onTextChanged(CharSequence s, int start, int before,
-					int count)
-	 *           
-	 * Description:  The class is used only to handle changes in text for
-	 *               the search and tag EditTexts.  When one of the two changes,
-	 *               the afterTextChanged() checks to see if there is no text 
-	 *               contained in both the search and tag editTexts.  If no text
-	 *               is contained in one or the other, the save button from the
-	 *               parent class is disabled.  Otherwise, the save button is
-	 *               enabled.
-	 *************************************************************************/
 	/**
-	 * 
-	 * @author Josh Schultz & Erik Hattervig
-	 * @date October 27, 2012
+	 * The class is used only to handle changes in text for
+	 * the name field.  When it changes, the afterTextChanged()
+	 * checks to see if there is no text contained in both
+	 * the search and tag editTexts.  If no text is contained in
+	 * the name field, the save button from the parent class is
+	 * disabled.  Otherwise, the save button is enabled.
+	 *  
+	 * @author Josh Schultz
+	 * @author Erik Hattervig
 	 *
 	 */
 	private class TwitterEditTextHandler implements TextWatcher
 	{
         
-        	/**************************************************************************
-         	* Author:  Josh Schultz & Erik Hattervig
-         	* Date: October 6, 2012
-         	* Description:  Called after s changes, if the search and tag editTexts are
-         	*               not empty strings, enable the Save button, otherwise disable
-         	*               it.
-         	* Params: Editable s - the editable affected
-         	* Returns: void 
-         	*************************************************************************/
+			/**
+			 * Called after s changes, if the TextName field is not an empty string,
+			 * enables the Save Button, otherwise disable the Save Button.
+			 * 
+			 * @author Josh Schultz
+			 * @author Erik Hattervig
+			 */
 			@Override
 			public void afterTextChanged(Editable s) 
 			{
@@ -357,36 +385,26 @@ public class DetailFragmentView extends Fragment implements OnClickListener
 				}
 			}
 
-			
-		    /**************************************************************************
-		     * Author:  Josh Schultz & Erik Hattervig
-		     * Date: October 6, 2012
-		     * Description:  Called before s is about to change; this method does nothing
-		     *               it is included just because of the interface.
-		     * Params: CharSequence s - the characters affected
-		     *         int start - Location of characters to be replaced
-		     *         int count - Number of characters inserted
-		     *         int after - Number of characters removed
-		     * Returns: void 
-		     *************************************************************************/
+			/**
+			 * Called before s is about to change; this method does nothing. It is
+			 * included because the interface requires it.
+			 * 
+			 * @author Josh Schultz
+			 * @author Erik Hattervig
+			 */
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
 				
 			}
 
-			
-		    /**************************************************************************
-		     * Author:  Josh Schultz & Erik Hattervig
-		     * Date: October 6, 2012
-		     * Description:  Called once s was changed; this method does nothing, it is
-		     *               included just because of the interface
-		     * Params: CharSequence s - the characters affected
-		     *         int start - Location of characters to be replaced
-		     *         int before - Number of characters removed
-		     *         int count - Number of characters inserted
-		     * Returns: void 
-		     *************************************************************************/
+		     /**
+			 * Called before s is about to change; this method does nothing. It is
+			 * included because the interface requires it.
+			 * 
+			 * @author Josh Schultz
+			 * @author Erik Hattervig
+			 */
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
