@@ -1,8 +1,14 @@
 package com.SchultzHattervig.addressbook;
 
+
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -60,6 +66,8 @@ public class DetailFragmentView extends Fragment implements OnClickListener
 
             _saveButton = (Button) rootView.findViewById(R.id.saveButton);
             _saveButton.setOnClickListener(this);
+            
+            _editTextName.addTextChangedListener(new TwitterEditTextHandler());
             return rootView;
     }
 
@@ -138,7 +146,8 @@ public class DetailFragmentView extends Fragment implements OnClickListener
                     }
                     case R.id.action_delete_contact:
                     {
-                            _listener.deleteContact(_contact);
+                    	onDeleteClicked();
+                            //_listener.deleteContact(_contact);
                             return true;
                     }
                     default:
@@ -220,6 +229,129 @@ public class DetailFragmentView extends Fragment implements OnClickListener
 			//Already exists in the database (since ID is valid)
 			_listener.updateContact(_contact);
 		}
+		
+	}
+	
+    /**************************************************************************
+     * Author:  Josh Schultz & Erik Hattervig
+     * Date: October 27, 2012
+     * Description:  When the 'Delete Contact' button is pressed, an alertDialog
+     *               is displayed prompting the user if they want to
+     *               delete the specified contact.
+     * Returns: void 
+     *************************************************************************/
+    public void onDeleteClicked ()
+    {
+    	//Create the alertDialog on the current activity
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+        
+        //Set the title and message based on the R file
+        alertBuilder.setTitle(R.string.alert_title);
+        alertBuilder.setMessage(R.string.alert_message);
+        
+        //Allow the user to cancel the dialog
+        alertBuilder.setCancelable(true);
+        
+        //If the user presses 'yes' call the clearTags onClick
+        alertBuilder.setPositiveButton(R.string.alert_yes, deleteContact);
+        
+        //If the user cancels, don't do anything
+        alertBuilder.setNegativeButton(R.string.alert_cancel, null);
+        
+        //Create and show the dialog
+        AlertDialog alert = alertBuilder.create();
+        alert.show();
+    }
+    
+
+	public DialogInterface.OnClickListener deleteContact = new DialogInterface.OnClickListener() 
+	{
+		
+		@Override
+		public void onClick(DialogInterface dialog, int which) 
+		{
+			_listener.deleteContact(_contact);
+			
+		}
+	};
+	
+	/**************************************************************************
+	 * Author:  Josh Schultz & Erik Hattervig
+	 * Date: October 4, 2012
+	 * Extends: (none)
+	 * Implements: TextWatcher
+	 * Methods:  public void afterTextChanged(Editable s) 
+	 *           public void beforeTextChanged(CharSequence s, int start, int count,
+					int after)
+	 *           public void onTextChanged(CharSequence s, int start, int before,
+					int count)
+	 *           
+	 * Description:  The class is used only to handle changes in text for
+	 *               the search and tag EditTexts.  When one of the two changes,
+	 *               the afterTextChanged() checks to see if there is no text 
+	 *               contained in both the search and tag editTexts.  If no text
+	 *               is contained in one or the other, the save button from the
+	 *               parent class is disabled.  Otherwise, the save button is
+	 *               enabled.
+	 *************************************************************************/
+	private class TwitterEditTextHandler implements TextWatcher
+	{
+        
+        	/**************************************************************************
+         	* Author:  Josh Schultz & Erik Hattervig
+         	* Date: October 6, 2012
+         	* Description:  Called after s changes, if the search and tag editTexts are
+         	*               not empty strings, enable the Save button, otherwise disable
+         	*               it.
+         	* Params: Editable s - the editable affected
+         	* Returns: void 
+         	*************************************************************************/
+			@Override
+			public void afterTextChanged(Editable s) 
+			{
+				if(_editTextName.getText().toString().matches(""))
+				{
+					_saveButton.setEnabled(false);
+				}else
+				{
+					_saveButton.setEnabled(true);
+				}
+			}
+
+			
+		    /**************************************************************************
+		     * Author:  Josh Schultz & Erik Hattervig
+		     * Date: October 6, 2012
+		     * Description:  Called before s is about to change; this method does nothing
+		     *               it is included just because of the interface.
+		     * Params: CharSequence s - the characters affected
+		     *         int start - Location of characters to be replaced
+		     *         int count - Number of characters inserted
+		     *         int after - Number of characters removed
+		     * Returns: void 
+		     *************************************************************************/
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				
+			}
+
+			
+		    /**************************************************************************
+		     * Author:  Josh Schultz & Erik Hattervig
+		     * Date: October 6, 2012
+		     * Description:  Called once s was changed; this method does nothing, it is
+		     *               included just because of the interface
+		     * Params: CharSequence s - the characters affected
+		     *         int start - Location of characters to be replaced
+		     *         int before - Number of characters removed
+		     *         int count - Number of characters inserted
+		     * Returns: void 
+		     *************************************************************************/
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+			}
 		
 	}
 }

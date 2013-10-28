@@ -24,6 +24,8 @@ public class ListFragmentView extends ListFragment
         // Tell the host activity that an options menu is
         // associated with this fragment.
         setHasOptionsMenu(true);
+        
+        //setRetainInstance(true);
             
     }
     

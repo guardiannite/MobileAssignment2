@@ -10,7 +10,11 @@ import android.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.ArrayAdapter;
-
+/**
+ * 
+ * @author 1954710
+ *
+ */
 public class MainActivity extends Activity implements IContactControlListener
 {
 	private Model _model;
@@ -20,21 +24,34 @@ public class MainActivity extends Activity implements IContactControlListener
 	private ArrayAdapter<Contact> _adapter;
 	private Contact _contact;
 	private final String TAG = "MainActivity";
+	private final String FRAGMENT_LIST_TAG = "ListTag";
+	private final String FRAGMENT_DETAIL_TAG = "DetailTag";
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
 		_fragmentManager = getFragmentManager();
-        
+		
         // If the fragment is not found, create it.
-        //_listFragmentView = (ListFragmentView) _fragmentManager.findFragmentByTag(FRAGMENT_LIST_TAG);
+
+		//_listFragmentView = (ListFragmentView) _fragmentManager.findFragmentByTag(FRAGMENT_LIST_TAG);
+		if(savedInstanceState != null)
+		{
+			Log.d(TAG, "Instance isn't NULL");
+			_listFragmentView = (ListFragmentView) _fragmentManager.findFragmentByTag(FRAGMENT_LIST_TAG);
+			_detailFragment = (DetailFragmentView) _fragmentManager.findFragmentByTag(FRAGMENT_DETAIL_TAG);
+		}
+		_listFragmentView = (ListFragmentView) _fragmentManager.findFragmentById(R.id.fragmentContainerFrame);
         if (_listFragmentView == null)
         {
                 _listFragmentView = new ListFragmentView();
         }
         
-        //_detailFragmentView = (DetailFragmentView) _fragmentManager.findFragmentByTag(FRAGMENT_DETAIL_TAG);
+       // _detailFragment = (DetailFragmentView) _fragmentManager.findFragmentByTag(FRAGMENT_DETAIL_TAG);
+        _detailFragment = (DetailFragmentView) _fragmentManager.findFragmentById(R.id.fragmentContainerFrame);
         if (_detailFragment == null)
         {
                 _detailFragment = new DetailFragmentView();
@@ -42,20 +59,17 @@ public class MainActivity extends Activity implements IContactControlListener
         _model = Model.getInstance(this);
 		//_model.insertSampleContacts();  //creates 4 contacts
         refreshArrayAdapter();
-        _fragmentManager.beginTransaction().add(R.id.fragmentContainerFrame,  _listFragmentView).commit();
+        _fragmentManager.beginTransaction().add(R.id.fragmentContainerFrame, _listFragmentView, FRAGMENT_LIST_TAG).commit();
+        	
         
-		
-		//Contact contact = new Contact("Josh", "490-4124", "joshua.schultz@mines.sdsmt.edu", "805 Blaine Ave", "Rapid City");
-		//_model.insertContact(contact);
-		//_model.deleteContact(contact);
-		Log.d(TAG, "Just starting onCreate()");
-		List<Contact> contacts = _model.getContacts();
-		for(int i = 0; i < contacts.size(); i++)
-		{
-			Log.d(TAG, contacts.toArray()[i].toString());
-		}		
 	}
-
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) 
+	{
+	}
+	
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) 
 	{
@@ -155,9 +169,10 @@ public class MainActivity extends Activity implements IContactControlListener
             
             // Perform the fragment transaction to display the details fragment.
             _fragmentManager.beginTransaction()
-                                    .replace(R.id.fragmentContainerFrame, _detailFragment)
+                                    .replace(R.id.fragmentContainerFrame, _detailFragment, FRAGMENT_DETAIL_TAG)
                                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                                     .addToBackStack(null)
                                     .commit();
     }
+    
 }

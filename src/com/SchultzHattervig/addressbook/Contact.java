@@ -62,12 +62,13 @@ public class Contact implements Comparator<Contact>
     @Override
     public String toString() 
     {
-        return String.valueOf(_id) + ": " + _name + " from " + _street + " " + _city + " with email " + _email + " and phone number " + _phone;
+        return String.valueOf(_name);//String.valueOf(_id) + ": " + _name + " from " + _street + " " + _city + " with email " + _email + " and phone number " + _phone;
     }
 
 	@Override
 	public int compare(Contact lhs, Contact rhs) 
 	{
+		//Case sensitve sort
 		return lhs.getName().compareTo(rhs.getName());
 	}
 }
