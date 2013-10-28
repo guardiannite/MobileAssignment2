@@ -9,13 +9,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-
+/**
+ * 
+ * @author Josh Schultz & Erik Hattervig
+ *
+ */
 public class ListFragmentView extends ListFragment 
 {
 	//IMPORTANT NOTE: There are no public members.
     
     private IContactControlListener _listener;
 
+    /**
+     * 
+     */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -29,6 +36,9 @@ public class ListFragmentView extends ListFragment
             
     }
     
+    /**
+     * 
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflator)
     {
@@ -40,6 +50,9 @@ public class ListFragmentView extends ListFragment
         super.onCreateOptionsMenu(menu, menuInflator);
     }
 
+    /**
+     * 
+     */
     @Override
     public void onAttach(Activity activity)
     {
@@ -58,6 +71,9 @@ public class ListFragmentView extends ListFragment
     }
 
 
+    /**
+     * 
+     */
     @Override
     public void onResume()
     {
@@ -67,6 +83,9 @@ public class ListFragmentView extends ListFragment
             refreshContactList();
     }
 
+    /**
+     * 
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -83,6 +102,9 @@ public class ListFragmentView extends ListFragment
         }
     }
 
+    /**
+     * 
+     */
     @Override
     public void onListItemClick(ListView l, View v, int position, long id)
     {
@@ -95,6 +117,9 @@ public class ListFragmentView extends ListFragment
         }
     }
 
+    /**
+     * 
+     */
     private void refreshContactList()
     {
         // Assign the adapter.

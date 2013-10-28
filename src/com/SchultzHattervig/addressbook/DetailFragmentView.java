@@ -4,7 +4,6 @@ package com.SchultzHattervig.addressbook;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
@@ -18,8 +17,11 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-
+/**
+ * Another Description
+ * @author Josh Schultz
+ * @author Erik Hattervig
+ */
 public class DetailFragmentView extends Fragment implements OnClickListener
 {
     //IMPORTANT NOTE: There are no public members.
@@ -51,6 +53,14 @@ public class DetailFragmentView extends Fragment implements OnClickListener
             setHasOptionsMenu(true);
     }
 
+    /**
+     * @param inflater
+     * @param container
+     * @param saveInstanceState
+     * 
+     * @return
+     * 
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -72,6 +82,9 @@ public class DetailFragmentView extends Fragment implements OnClickListener
     }
 
 
+    /**
+     * @param activity
+     */
     @Override
     public void onAttach(Activity activity)
     {
@@ -88,6 +101,10 @@ public class DetailFragmentView extends Fragment implements OnClickListener
             super.onAttach(activity);
     }
     
+    
+    /**
+     * 
+     */
     @Override
     public void onResume()
     {
@@ -106,6 +123,9 @@ public class DetailFragmentView extends Fragment implements OnClickListener
             displayContact();
     }
     
+    /**
+     * 
+     */
     @Override
     public void onPause()
     {
@@ -119,6 +139,10 @@ public class DetailFragmentView extends Fragment implements OnClickListener
             super.onPause();
     }
 
+    /**
+     * @param menu
+     * @param menuInflator
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflator)
     {
@@ -133,6 +157,11 @@ public class DetailFragmentView extends Fragment implements OnClickListener
             }
     }
 
+    /**
+     * @param item
+     * 
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -157,7 +186,9 @@ public class DetailFragmentView extends Fragment implements OnClickListener
             }
     }
 
-    
+    /**
+     * 
+     */
     private void displayContact()
     {
             if (_contact.getID() > 0)
@@ -191,6 +222,10 @@ public class DetailFragmentView extends Fragment implements OnClickListener
             
     }
 
+    /**
+     * 
+     * @param value
+     */
     private void enableEditing(boolean value)
     {
         _editTextName.setEnabled(value);
@@ -209,6 +244,10 @@ public class DetailFragmentView extends Fragment implements OnClickListener
         }
     }
     
+    
+    /**
+     * @param v
+     */
 	@Override
 	public void onClick(View v) 
 	{	
@@ -232,14 +271,9 @@ public class DetailFragmentView extends Fragment implements OnClickListener
 		
 	}
 	
-    /**************************************************************************
-     * Author:  Josh Schultz & Erik Hattervig
-     * Date: October 27, 2012
-     * Description:  When the 'Delete Contact' button is pressed, an alertDialog
-     *               is displayed prompting the user if they want to
-     *               delete the specified contact.
-     * Returns: void 
-     *************************************************************************/
+    /**
+     * 
+     */
     public void onDeleteClicked ()
     {
     	//Create the alertDialog on the current activity
@@ -263,7 +297,6 @@ public class DetailFragmentView extends Fragment implements OnClickListener
         alert.show();
     }
     
-
 	public DialogInterface.OnClickListener deleteContact = new DialogInterface.OnClickListener() 
 	{
 		
@@ -294,6 +327,12 @@ public class DetailFragmentView extends Fragment implements OnClickListener
 	 *               parent class is disabled.  Otherwise, the save button is
 	 *               enabled.
 	 *************************************************************************/
+	/**
+	 * 
+	 * @author Josh Schultz & Erik Hattervig
+	 * @date October 27, 2012
+	 *
+	 */
 	private class TwitterEditTextHandler implements TextWatcher
 	{
         

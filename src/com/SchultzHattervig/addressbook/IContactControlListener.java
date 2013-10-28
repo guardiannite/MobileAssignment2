@@ -1,7 +1,11 @@
 package com.SchultzHattervig.addressbook;
 
 import android.widget.ArrayAdapter;
-
+/** 
+ * 
+ * @author Josh Schultz & Erik Hattervig
+ *
+ */
 public interface IContactControlListener 
 {
     public void selectContact(Contact contact);

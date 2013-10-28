@@ -7,10 +7,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
+/**
+ * 
+ * @author Josh Schultz & Erik Hattervig
+ *
+ */
 public class Model extends SQLiteOpenHelper 
 {
 
@@ -50,6 +53,10 @@ public class Model extends SQLiteOpenHelper
      *
      */
 
+    /**
+     * 
+     * @param context
+     */
     public Model(Context context)
     {
         // Call the parent class and pass the actual name and version of the
@@ -59,6 +66,9 @@ public class Model extends SQLiteOpenHelper
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * @param db
+     */
     @Override
     public void onCreate(SQLiteDatabase db)
     {
@@ -67,6 +77,11 @@ public class Model extends SQLiteOpenHelper
         db.execSQL(TABLE_CREATE_MYcontactS);
     }
 
+    /**
+     * @param db
+     * @param oldVersion
+     * @param newVersion
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
@@ -82,6 +97,11 @@ public class Model extends SQLiteOpenHelper
         }
     }
     
+    /**
+     * 
+     * @param context
+     * @return
+     */
     public static synchronized Model getInstance(Context context)
     {
         // Used to synchronize access and force singleton on the 
@@ -94,6 +114,10 @@ public class Model extends SQLiteOpenHelper
         return _instance;
     }
 
+    /**
+     * 
+     * @param contact
+     */
     public void insertContact(Contact contact)
     {
         // Take parameters and pass to method to populate the
@@ -120,6 +144,9 @@ public class Model extends SQLiteOpenHelper
 
     }
 
+    /**
+     * 
+     */
     public void insertSampleContacts()
     {
         Contact contact;
@@ -137,6 +164,11 @@ public class Model extends SQLiteOpenHelper
         insertContact(contact);
     }
 
+    /**
+     * 
+     * @param contact
+     * @return
+     */
     public boolean updateContact(Contact contact)
     {
     	//Before opening the database, verify the contact contains a valid ID
@@ -170,6 +202,11 @@ public class Model extends SQLiteOpenHelper
         return true;
     }
 
+    /**
+     * 
+     * @param contact
+     * @return
+     */
     public boolean deleteContact(Contact contact)
     {
     	//Before opening the database, verify the contact contains a valid ID
@@ -199,6 +236,9 @@ public class Model extends SQLiteOpenHelper
         return true;
     }
 
+    /**
+     * 
+     */
     public void clearAllContacts()
     {
     	List<Contact> contacts = getContacts();
@@ -214,6 +254,11 @@ public class Model extends SQLiteOpenHelper
     	closeDBConnection();
     }
     
+    /**
+     * 
+     * @param id
+     * @return
+     */
     public Contact getContact(long id)
     {
         Contact contact = null;
@@ -241,6 +286,10 @@ public class Model extends SQLiteOpenHelper
         return contact;
     }
     
+    /**
+     * 
+     * @return
+     */
     public List<Contact> getContacts()
     {
         List<Contact> contacts = new ArrayList<Contact>();
@@ -271,12 +320,18 @@ public class Model extends SQLiteOpenHelper
         return contacts;
     }
 
+    /**
+     * 
+     */
     private void openDBConnection()
     {
         // Opens connection to the database for writing specifically.
         _db = getWritableDatabase();
     }
 
+    /**
+     * 
+     */
     private void closeDBConnection()
     {
         if (_db != null && _db.isOpen() == true)
@@ -286,6 +341,11 @@ public class Model extends SQLiteOpenHelper
         }
     }
 
+    /**
+     * 
+     * @param cursor
+     * @return 
+     */
     private Contact cursorToContact(Cursor cursor)
     {
         long id = cursor.getLong(cursor.getColumnIndex(KEY_ID));
@@ -299,7 +359,15 @@ public class Model extends SQLiteOpenHelper
         return contact;
     }
 
-    //Whatever values are returned will be populated in the database
+    /**
+     * Commonly used to make calls to the database.  This creates (more/less)
+     * a string that contains all of the contact's information.
+     * 
+     * @param contact The contact that will be parsed into contentValues
+     * 
+     * @return The contentValues of the contact.  This contains the name,
+     * phone, email, and address.
+     */
     private ContentValues populateContentValues(Contact contact)
     {
         // Common function used to populate the ContentValues to be used in SQL
